@@ -5,13 +5,71 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
+      <li class="nav-item d-none d-sm-inline-block <?php if($current == 'dashboard') {echo 'active';} ?>">
         <a href="index.php" class="nav-link">Home</a>
       </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-comments"></i>
+          <span class="badge badge-danger navbar-badge">3</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <a href="#" class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+              <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  Brad Diesel
+                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                </h3>
+                <p class="text-sm">Call me whenever you can...</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              </div>
+            </div>
+            <!-- Message End -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+              <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  John Pierce
+                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                </h3>
+                <p class="text-sm">I got your message bro</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              </div>
+            </div>
+            <!-- Message End -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  Nora Silvester
+                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                </h3>
+                <p class="text-sm">The subject goes here</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              </div>
+            </div>
+            <!-- Message End -->
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="messages.php" class="dropdown-item dropdown-footer">See All Messages</a>
+        </div>
+      </li>
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -63,13 +121,22 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?php echo $user['firstname']. ' '.$user['lastname']; ?></a>
+          <a href="index.php" class="d-block"><?php echo $user['firstname']. ' '.$user['lastname']; ?></a>
         </div>
       </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-toggle="modal" data-target="#message">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Create Message
+              </p>
+            </a>
+          </li>
+          <?php if($current != 'messages') {?>
           <li class="nav-item">
             <a href="index.php" class="nav-link <?php if($current == 'dashboard') {echo 'active';} ?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -79,18 +146,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="messages.php" class="nav-link <?php if($current == 'messages') {echo 'active';} ?>">
-              <i class="nav-icon fas fa-comments"></i>
-              <p>
-                Messages
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="projects.php" class="nav-link <?php if($current == 'projects') {echo 'active';} ?>">
               <i class="nav-icon fas fa-scroll"></i>
               <p>
-                My Projects
+                Projects
               </p>
             </a>
           </li>
@@ -98,7 +157,7 @@
             <a href="teams.php" class="nav-link <?php if($current == 'teams') {echo 'active';} ?>">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                My Teams
+                Teams
               </p>
             </a>
           </li>
@@ -110,9 +169,29 @@
               </p>
             </a>
           </li>
+        <?php } else {?>
+           <?php
+            $sql = mysqli_query($conn, "SELECT * from contacts");
+            while ($row = mysqli_fetch_array($sql)) {
+          ?>
+
+          <li class="nav-item">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+              <div class="image">
+                <img src="dist/img/<?php echo $row['image'];?>" class="img-circle">
+              </div>
+              <div class="info">
+                <a href='messages.php?id=<?php echo $row['id']; ?>' class="d-block"><?php echo ucwords($row['name']);?></i></a>
+              </div>
+            </div>
+          </li>
+
+        <?php } }?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
+
+
   </aside>

@@ -28,52 +28,104 @@
 
  <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-default">
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-12">
-                <table class="table table-bordered table-striped display">
+            <div class="container-fluid">
+<div class="card card-primary card-outline card-outline-tabs">
+              <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">My Teams</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-settings" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">All Teams</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+                  <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                    
+                  <table class="table table-bordered table-striped display">
                   <thead>
                   <tr>
+                    <th width="20">#</th>
                     <th width="100">Team Name</th>
-                    <th width="50">Action</th>
+                    <th width="200"></th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
-                    $getAllOrders = mysqli_query($conn, "SELECT * from team");
-                    while($row = mysqli_fetch_assoc($getAllOrders)) {
+                    $myteam = mysqli_query($conn, "SELECT *, team.id as teamID from team join teammembers on team.id = teammembers.teamID where teammembers.userID = '".$id."'");
+                    while($row = mysqli_fetch_assoc($myteam)) {
                     ?>
                       <tr>
+                        <td><?php echo ucwords($row['id']); ?></td>
                         <td><?php echo ucwords($row['name']); ?></td>
-                        <td><?php echo ucwords($row['description']); ?></td>
-                        <td><?php echo ucwords($row['owner']); ?></td>
-                        <td> 
-                          <a href='evaluationview.php?id=<?php echo $row['applicantID']; ?>'><i class='fas fa-eye' class='btn btn-danger btn-rounded form-check-label'></i></a> | 
-                          <a href='evaluationview.php?id=<?php echo $row['applicantID']; ?>'><i class='fas fa-eye' class='btn btn-danger btn-rounded form-check-label'></i></a> | 
-                          <a href='evaluationview.php?id=<?php echo $row['applicantID']; ?>'><i class='fas fa-eye' class='btn btn-danger btn-rounded form-check-label'></i></a>
-                        </td>
+                        <td>
+                      <div class="btn-group">
+                        <a class="btn btn-primary btn-sm" href='teaminfo.php?id=<?php echo $row['teamID']; ?>'><i class="fas fa-folder"></i>View</a>
+                        <a class="btn btn-info btn-sm" href='teammembers.php?id=<?php echo $row['teamID']; ?>'><i class="fas fa-users"></i>Members</a>
+                        </a>
+                      </div>
+                      
+                    </td>
+                  </tr>
+
+                <?php } ?>
+                  </tbody>
+                
+                </table> 
+                  </div>
+                  <div class="tab-pane fade" id="custom-tabs-four-settings" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                     <table class="table table-bordered table-striped display">
+                  <thead>
+                  <tr>
+                    <th width="20">#</th>
+                    <th width="100">Team Name</th>
+                    <th width="200"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    $allprojects = mysqli_query($conn, "SELECT *, team.id as teamID from team");
+                    while($row1 = mysqli_fetch_assoc($allprojects)) {
+                    ?>
+                      <tr>
+                        <td><?php echo ucwords($row1['id']); ?></td>
+                        <td><?php echo ucwords($row1['name']); ?></td>
+                    <td>
+                      <div class="btn-group">
+                        <a class="btn btn-primary btn-sm" href='teaminfo.php?id=<?php echo $row1['teamID']; ?>'><i class="fas fa-folder"></i>View
+                        </a>
+                        <a class="btn btn-info btn-sm" href='teammembers.php?id=<?php echo $row1['teamID']; ?>'><i class="fas fa-users"></i>Members
+                        </a>
+<!--                         <a class="btn btn-success btn-sm" href='teamjoin.php?id=<?php echo $row1['teamID']; ?>'><i class="fas fa-users"></i>Join
+                        </a> -->
+                      </div>
+                    </td>
                   </tr>
 
                 <?php } ?>
                   </tbody>
                 
                 </table>
+                </form>  
+                  </div>
+                </div>
               </div>
-              <!-- /.col -->
+              <!-- /.card -->
+              <div class="card-footer">                
+            <div class="row">
+              <div class="col-3">
+              <a href="createteam.php"><button type="button" class="btn btn-block btn-primary">Create Team</button></a>
+              </div>
             </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
+          </div><!-- /.footer -->
+            </div>
+
+
       </div><!-- /.container-fluid -->
 
-
-
+    
     </section>
     <!-- /.content -->
   </div>

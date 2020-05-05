@@ -1,13 +1,16 @@
 <?php 
   include 'includes/session.php';
   include 'includes/header.php'; 
-  $current = "projects";
+  $current = "teams";
 
   $previous = "javascript:history.go(-1)";
 if(isset($_SERVER['HTTP_REFERER'])) {
     $previous = $_SERVER['HTTP_REFERER'];
 }
- $projectID = $_GET['id'];
+ $teamID = $_GET['id'];
+
+  $sql = mysqli_query($conn, "SELECT * from team where id = '$teamID'");
+  $row = mysqli_fetch_assoc($sql);
 
 ?>
 <body class="hold-transition sidebar-mini">
@@ -21,7 +24,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Members</h1>
+            <h1><?php echo ucwords($row['name']);?></h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -43,17 +46,15 @@ if(isset($_SERVER['HTTP_REFERER'])) {
                   <thead>
                     <tr>
                       <th width="100">Full Name</th>
-                      <th width="100">Role</th>
                       <th width="20" style="width: 10px"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php 
-                    $sql = mysqli_query($conn, "SELECT * from projectmembers join users on projectmembers.userID = users.id where projectID = '$projectID'");
+                    $sql = mysqli_query($conn, "SELECT * from teammembers join users on teammembers.userID = users.id where teamID = '$teamID'");
                     while($row = mysqli_fetch_assoc($sql)) { ?>
                     <tr>
                       <td><?php echo ucwords($row['firstname']); ?> <?php echo ucwords($row['lastname']); ?></td>
-                      <td><?php echo ucwords($row['role']); ?></td>
                       <td><a href="profile.php"><span class="badge bg-info">View Profile</span></a></td>
                     </tr>
                     <tr>

@@ -10,7 +10,7 @@
 		$query -> execute();
 		$result = $query->get_result();
 		$user = mysqli_fetch_assoc($result);
-		$role = $user['role'];
+		$id = $user['id'];
 		$today = date('Y-m-d H:i');
 
 	}

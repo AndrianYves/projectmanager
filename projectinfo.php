@@ -44,9 +44,7 @@ if(isset($_POST['addteam'])){
 
   if(!$error){
     mysqli_commit($conn);
-    session_start();
     $_SESSION['success'] = 'Team Join';
-    header('location: projects.php');
   } else {
     mysqli_rollback($conn);
   }
@@ -107,7 +105,7 @@ if(isset($_POST['addteam'])){
                   <li><?php echo ucfirst($row1['name']);?><a class="btn btn-info btn-sm" href='teammembers.php?id=<?php echo $row1['teamID']; ?>'><i class="fas fa-users"></i>Members
                         </a></li></ul>
                 <?php }?>
-                <dd><a class="btn btn-primary btn-sm" href='viewmembers.php?id=<?php echo $projID; ?>'><i class="fas fa-users"></i>View Member Roles
+                <dd><a class="btn btn-primary btn-sm" href='projectviewmembers.php?id=<?php echo $projID; ?>'><i class="fas fa-users"></i>View Member Roles
                         </a></dd>
                 
                 </dl>

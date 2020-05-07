@@ -2,6 +2,10 @@
   include 'includes/session.php';
   include 'includes/header.php'; 
   $current = "dashboard";
+
+  $sql = mysqli_query($conn, "SELECT * from aboutme where userID = '$id'");
+  $row1 = mysqli_fetch_assoc($sql);
+
 ?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -19,7 +23,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -41,16 +45,26 @@
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center">Nina Mcintire</h3>
+                <h3 class="profile-username text-center"><?php echo ucwords($user['firstname']);?> <?php echo ucwords($user['lastname']);?></h3>
 
-                <p class="text-muted text-center">Software Engineer</p>
+                <p class="text-muted text-center"><?php echo ucwords($row1['title']);?></p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Projects</b> <a class="float-right">1,322</a>
+                  <?php
+                    $sql1 = "SELECT * FROM projectmembers where userID = '$id'";
+                    $query = mysqli_query($conn, $sql1);
+                  
+                    echo "<b>Projects</b><a class='float-right'>".mysqli_num_rows($query)."</a>";
+                  ?>
                   </li>
                   <li class="list-group-item">
-                    <b>Teams</b> <a class="float-right">543</a>
+                  <?php
+                    $sql2 = "SELECT * FROM teammembers where userID = '$id'";
+                    $query1 = mysqli_query($conn, $sql2);
+                  
+                    echo "<b>Teams</b><a class='float-right'>".mysqli_num_rows($query1)."</a>";
+                  ?>
                   </li>
                 </ul>
               </div>
@@ -68,32 +82,28 @@
                 <strong><i class="fas fa-book mr-1"></i> Education</strong>
 
                 <p class="text-muted">
-                  B.S. in Computer Science from the University of Tennessee at Knoxville
+                  <?php echo ucfirst($row1['education']);?>
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                <p class="text-muted">Malibu, California</p>
+                <p class="text-muted"><?php echo ucfirst($row1['location']);?></p>
 
                 <hr>
 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger">UI Design</span>
-                  <span class="tag tag-success">Coding</span>
-                  <span class="tag tag-info">Javascript</span>
-                  <span class="tag tag-warning">PHP</span>
-                  <span class="tag tag-primary">Node.js</span>
+                  <span class="tag tag-danger"><?php echo ucfirst($row1['skills']);?></span>
                 </p>
 
                 <hr>
 
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                <p class="text-muted"><?php echo ucfirst($row1['notes']);?>.</p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -107,14 +117,14 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <?php echo "<h3>".mysqli_num_rows($query)."</h3>";?>
 
                 <p>My Project</p>
               </div>
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="projects.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -122,44 +132,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <?php echo "<h3>".mysqli_num_rows($query1)."</h3>";?>
 
                 <p>My Teams</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p>Joined Projects</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>65</h3>
-
-                <p>Cancelled Projects</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="teams.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

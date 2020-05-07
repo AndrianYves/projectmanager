@@ -60,7 +60,7 @@ if(isset($_POST['createproject'])){
   $result2 = mysqli_query($conn, "SELECT * FROM project where `name` = '$projectname'");
   $row = mysqli_fetch_assoc($result2);
   $projID = $row['id'];
-  $role = 'Project Manager';
+  $role = 'project manager';
 
   if (!empty($_POST["projectteam"])){
     $numberteam = count($_POST["projectteam"]);
@@ -95,9 +95,6 @@ if(isset($_POST['createproject'])){
     $sql->close();
 
   }
-
-
-
 
   if(!$error){
     mysqli_commit($conn);

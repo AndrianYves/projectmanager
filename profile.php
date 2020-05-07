@@ -7,6 +7,11 @@
 if(isset($_SERVER['HTTP_REFERER'])) {
     $previous = $_SERVER['HTTP_REFERER'];
 }
+
+ $usID = $_GET['id'];
+
+  $sql = mysqli_query($conn, "SELECT * from users left join aboutme on users.id = aboutme.userID where users.id = '$usID'");
+  $row = mysqli_fetch_assoc($sql);
 ?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -19,7 +24,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Teams</h1>
+            <h1>View Profile</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -44,16 +49,26 @@ if(isset($_SERVER['HTTP_REFERER'])) {
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center">Nina Mcintire</h3>
+                <h3 class="profile-username text-center"><?php echo ucwords($row['firstname']);?> <?php echo ucwords($row['lastname']);?></h3>
 
-                <p class="text-muted text-center">Software Engineer</p>
+                <p class="text-muted text-center"><?php echo ucwords($row['title']);?></p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Projects</b> <a class="float-right">1,322</a>
+                  <?php
+                    $sql1 = "SELECT * FROM projectmembers where userID = '$usID'";
+                    $query = mysqli_query($conn, $sql1);
+                  
+                    echo "<b>Projects</b><a class='float-right'>".mysqli_num_rows($query)."</a>";
+                  ?>
                   </li>
                   <li class="list-group-item">
-                    <b>Teams</b> <a class="float-right">543</a>
+                  <?php
+                    $sql2 = "SELECT * FROM teammembers where userID = '$usID'";
+                    $query1 = mysqli_query($conn, $sql2);
+                  
+                    echo "<b>Teams</b><a class='float-right'>".mysqli_num_rows($query1)."</a>";
+                  ?>
                   </li>
                 </ul>
               </div>
@@ -71,32 +86,28 @@ if(isset($_SERVER['HTTP_REFERER'])) {
                 <strong><i class="fas fa-book mr-1"></i> Education</strong>
 
                 <p class="text-muted">
-                  B.S. in Computer Science from the University of Tennessee at Knoxville
+                  <?php echo ucfirst($row['education']);?>
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                <p class="text-muted">Malibu, California</p>
+                <p class="text-muted"><?php echo ucfirst($row['location']);?></p>
 
                 <hr>
 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger">UI Design</span>
-                  <span class="tag tag-success">Coding</span>
-                  <span class="tag tag-info">Javascript</span>
-                  <span class="tag tag-warning">PHP</span>
-                  <span class="tag tag-primary">Node.js</span>
+                  <span class="tag tag-danger"><?php echo ucfirst($row['skills']);?></span>
                 </p>
 
                 <hr>
 
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                <p class="text-muted"><?php echo ucfirst($row['notes']);?></p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -118,6 +129,17 @@ if(isset($_SERVER['HTTP_REFERER'])) {
                     </tr>
                   </thead>
                   <tbody>
+                     <?php
+                    $listproj = mysqli_query($conn, "SELECT * from project join projectmembers on project.id = projectmembers.projectID where projectmembers.userID = '2'");
+                    while($row = mysqli_fetch_assoc($listproj)) {
+                    ?>
+                      <tr>
+                        <td><?php echo ucwords($row['name']); ?></td>
+                        <td><?php echo ucwords($row['role']); ?></td>
+                      </tr>
+
+                  <?php } ?>
+
                     <tr>
                       <td>Inventory</td>
                       <td>Project Manager</td>
@@ -129,71 +151,6 @@ if(isset($_SERVER['HTTP_REFERER'])) {
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-
-             <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
-
-                <p>Current Project</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success">
-              <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                <p></p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning">
-              <div class="inner">
-                <h3>44</h3>
-
-                <p></p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>65</h3>
-
-                <p></p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-        <!-- /.row -->
           </div>
           <!-- /.col -->
 

@@ -66,7 +66,7 @@
                   <tr>
                     <th width="20">#</th>
                     <th width="100">Project Name</th>
-                    <th width="100">Owner</th>
+                    <th width="100">Project Manager</th>
                     <th width="50">Status</th>
                     <th width="200"></th>
                   </tr>
@@ -91,7 +91,7 @@
                     <td>
                       <div class="btn-group">
                         <a class="btn btn-primary btn-sm" href='projectinfo.php?id=<?php echo $row['projID']; ?>'><i class="fas fa-folder"></i>View</a>
-                        <a class="btn btn-info btn-sm" href='viewmembers.php?id=<?php echo $row['projID']; ?>'><i class="fas fa-users"></i>Members</a>
+                        <a class="btn btn-info btn-sm" href='projectviewmembers.php?id=<?php echo $row['projID']; ?>'><i class="fas fa-users"></i>Members</a>
                         </a>
                       </div>
                       

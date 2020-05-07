@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2020 at 11:27 AM
+-- Generation Time: May 07, 2020 at 12:50 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -31,11 +31,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `aboutme` (
   `id` int(255) NOT NULL,
   `userID` bigint(255) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `education` text DEFAULT NULL,
   `location` text DEFAULT NULL,
   `skills` text DEFAULT NULL,
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `aboutme`
+--
+
+INSERT INTO `aboutme` (`id`, `userID`, `title`, `education`, `location`, `skills`, `notes`) VALUES
+(1, 1, 'software engineer', 'saint louis university', 'new lucban ext', 'ui, designer, developer', 'i love coding');
 
 -- --------------------------------------------------------
 
@@ -122,12 +130,13 @@ CREATE TABLE `project` (
 INSERT INTO `project` (`id`, `name`, `description`, `location`, `datestart`, `dateend`, `status`, `owner`, `timestamp`) VALUES
 (1, 'inventory system', 'water refilling district 12', 'baguio', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 07:15:05.000000'),
 (2, 'quiz', 'quizz', 'new lucban', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 08:18:51.000000'),
-(3, 'megaphone', 'create', 'city hall', '2020-05-01', '2020-05-31', 'on going', 4, '2020-05-05 08:30:36.000000'),
+(3, 'megaphone', 'create', 'city hall', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 08:30:36.000000'),
 (4, 'industrial trial', 'trial', 'brookside', '2020-05-01', '2020-05-31', 'on going', 4, '2020-05-05 08:45:10.000000'),
 (5, 'cellphone', 'mobile', 'holy', '2020-05-16', '2020-05-25', 'on going', 4, '2020-05-05 08:58:24.000000'),
 (6, 'laptop', 'dell', 'dau', '2020-05-01', '2020-05-14', 'on going', 4, '2020-05-05 09:00:34.000000'),
 (7, 'pc', 'pc', 'dau', '2020-05-01', '2020-05-06', 'on going', 4, '2020-05-05 09:01:34.000000'),
-(8, 'smart phone', 'dd', 'asds', '2020-05-01', '2020-05-06', 'on going', 4, '2020-05-05 09:02:09.000000');
+(8, 'smart phone', 'dd', 'asds', '2020-05-01', '2020-05-06', 'on going', 4, '2020-05-05 09:02:09.000000'),
+(9, 'lemon juice', 'lemon juice', 'slu', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-07 10:20:12.000000');
 
 -- --------------------------------------------------------
 
@@ -136,6 +145,7 @@ INSERT INTO `project` (`id`, `name`, `description`, `location`, `datestart`, `da
 --
 
 CREATE TABLE `projectmembers` (
+  `id` bigint(255) NOT NULL,
   `projectID` bigint(255) NOT NULL,
   `userID` bigint(255) NOT NULL,
   `role` varchar(255) DEFAULT NULL
@@ -145,28 +155,30 @@ CREATE TABLE `projectmembers` (
 -- Dumping data for table `projectmembers`
 --
 
-INSERT INTO `projectmembers` (`projectID`, `userID`, `role`) VALUES
-(1, 1, 'Project Manager'),
-(1, 2, NULL),
-(1, 3, NULL),
-(1, 4, NULL),
-(1, 5, NULL),
-(2, 1, 'Project Manager'),
-(2, 5, NULL),
-(3, 1, NULL),
-(3, 2, NULL),
-(3, 3, NULL),
-(3, 4, NULL),
-(3, 5, NULL),
-(4, 1, NULL),
-(4, 2, NULL),
-(4, 3, NULL),
-(4, 4, NULL),
-(4, 5, NULL),
-(7, 4, 'Project Manager'),
-(8, 2, NULL),
-(8, 3, NULL),
-(8, 4, 'Project Manager');
+INSERT INTO `projectmembers` (`id`, `projectID`, `userID`, `role`) VALUES
+(1, 1, 1, 'Project Manager'),
+(2, 1, 2, NULL),
+(3, 1, 3, NULL),
+(4, 1, 4, NULL),
+(6, 2, 1, 'Project Manager'),
+(8, 3, 1, 'project manager'),
+(9, 3, 2, NULL),
+(10, 3, 3, NULL),
+(11, 3, 4, NULL),
+(13, 4, 1, 'developer'),
+(14, 4, 2, NULL),
+(15, 4, 3, NULL),
+(16, 4, 4, 'project manager'),
+(18, 7, 4, 'Project Manager'),
+(19, 8, 2, NULL),
+(20, 8, 3, NULL),
+(21, 8, 4, 'Project Manager'),
+(23, 2, 4, NULL),
+(27, 2, 2, NULL),
+(31, 2, 3, NULL),
+(34, 9, 1, 'project manager'),
+(35, 9, 3, NULL),
+(38, 9, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -193,7 +205,9 @@ INSERT INTO `projectteams` (`projectID`, `teamID`) VALUES
 (4, 1),
 (4, 2),
 (8, 1),
-(8, 3);
+(8, 3),
+(9, 6),
+(9, 7);
 
 -- --------------------------------------------------------
 
@@ -216,7 +230,7 @@ INSERT INTO `team` (`id`, `name`) VALUES
 (3, 'charlie'),
 (4, 'delta'),
 (5, 'foxtrot'),
-(6, ''),
+(6, 'geometry'),
 (7, 'howard');
 
 -- --------------------------------------------------------
@@ -239,9 +253,14 @@ INSERT INTO `teammembers` (`teamID`, `userID`) VALUES
 (1, 3),
 (1, 4),
 (2, 1),
+(2, 2),
+(2, 3),
+(2, 4),
 (2, 5),
 (6, 1),
+(6, 2),
 (6, 3),
+(6, 5),
 (7, 1),
 (7, 3);
 
@@ -265,10 +284,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `lastlogin`) VALUES
-(1, '12345@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'admin', 'admin', '2020-05-05 07:11:03.000000'),
+(1, '12345@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'admin', 'admin', '2020-05-07 08:51:18.000000'),
 (2, 'adawd@gmail.com', '$2y$10$UwQe/JSTdhFaF6H2tCn2vOoHfmzXtHj9akuWPfC7DjT09bqv3OTUi', 'andrian yves', 'macalino', '2020-04-28 01:54:17.000000'),
 (3, 'john@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'john', 'john', '2020-05-05 07:09:21.000000'),
-(4, 'mark@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'mark', 'mark', '2020-05-05 07:27:35.000000'),
+(4, 'mark@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'mark', 'mark', '2020-05-06 23:49:34.000000'),
 (5, 'peter@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'peter', 'peter', NULL);
 
 --
@@ -304,6 +323,7 @@ ALTER TABLE `project`
 -- Indexes for table `projectmembers`
 --
 ALTER TABLE `projectmembers`
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `projectID` (`projectID`,`userID`);
 
 --
@@ -339,7 +359,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `aboutme`
 --
 ALTER TABLE `aboutme`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `contacts`
@@ -357,7 +377,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `projectmembers`
+--
+ALTER TABLE `projectmembers`
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `team`

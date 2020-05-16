@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2020 at 12:50 PM
+-- Generation Time: May 16, 2020 at 03:27 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -35,38 +35,16 @@ CREATE TABLE `aboutme` (
   `education` text DEFAULT NULL,
   `location` text DEFAULT NULL,
   `skills` text DEFAULT NULL,
-  `notes` text DEFAULT NULL
+  `notes` text DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `aboutme`
 --
 
-INSERT INTO `aboutme` (`id`, `userID`, `title`, `education`, `location`, `skills`, `notes`) VALUES
-(1, 1, 'software engineer', 'saint louis university', 'new lucban ext', 'ui, designer, developer', 'i love coding');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `contacts`
---
-
-CREATE TABLE `contacts` (
-  `id` int(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `number` varchar(11) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `image` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `contacts`
---
-
-INSERT INTO `contacts` (`id`, `name`, `number`, `address`, `image`) VALUES
-(1, 'leo martin barbara', '09123456789', '123 san carlos city', 'avatar.png'),
-(2, 'john michael jackson', '09341345313', '324 poblacion', 'avatar2.png'),
-(9, 'Mr Lucas', '09123123234', '123 bonifacio', 'man-657869_1920.jpg');
+INSERT INTO `aboutme` (`id`, `userID`, `title`, `education`, `location`, `skills`, `notes`, `image`) VALUES
+(1, 1, NULL, NULL, NULL, NULL, NULL, 'avatar.png');
 
 -- --------------------------------------------------------
 
@@ -76,34 +54,11 @@ INSERT INTO `contacts` (`id`, `name`, `number`, `address`, `image`) VALUES
 
 CREATE TABLE `messages` (
   `id` int(255) NOT NULL,
-  `sendto` int(255) NOT NULL,
+  `sender` int(255) NOT NULL,
+  `receiver` int(255) NOT NULL,
   `message` text NOT NULL,
   `timestamp` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `sendto`, `message`, `timestamp`) VALUES
-(1, 1, 'lets goo', '2020-02-05 15:43:00.000000'),
-(2, 1, 'where na u??', '2020-02-04 17:00:00.000000'),
-(3, 2, 'hi', '2020-02-05 09:18:05.000000'),
-(4, 2, 'hello', '2020-02-05 09:18:18.000000'),
-(5, 2, '', '2020-02-05 09:23:29.000000'),
-(6, 2, 'we', '2020-02-05 09:27:12.000000'),
-(7, 1, 'lo', '2020-02-05 09:27:22.000000'),
-(8, 2, 'nice', '2020-02-05 09:27:48.000000'),
-(9, 1, 'wdwd', '2020-02-05 09:30:17.000000'),
-(10, 1, 'sd', '2020-02-05 09:31:06.000000'),
-(11, 2, 'wdwd', '2020-02-05 09:31:10.000000'),
-(12, 2, 'sup', '2020-02-05 09:46:28.000000'),
-(13, 1, 'hey ', '2020-02-05 09:46:41.000000'),
-(14, 2, 'df', '2020-02-05 09:47:13.000000'),
-(15, 1, 'water', '2020-02-05 18:54:03.000000'),
-(16, 2, 'musta??', '2020-02-05 18:54:19.000000'),
-(17, 9, 'men', '2020-02-05 18:54:58.000000'),
-(18, 2, 'sup??', '2020-02-05 18:56:07.000000');
 
 -- --------------------------------------------------------
 
@@ -123,21 +78,6 @@ CREATE TABLE `project` (
   `timestamp` timestamp(6) NOT NULL DEFAULT current_timestamp(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `project`
---
-
-INSERT INTO `project` (`id`, `name`, `description`, `location`, `datestart`, `dateend`, `status`, `owner`, `timestamp`) VALUES
-(1, 'inventory system', 'water refilling district 12', 'baguio', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 07:15:05.000000'),
-(2, 'quiz', 'quizz', 'new lucban', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 08:18:51.000000'),
-(3, 'megaphone', 'create', 'city hall', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-05 08:30:36.000000'),
-(4, 'industrial trial', 'trial', 'brookside', '2020-05-01', '2020-05-31', 'on going', 4, '2020-05-05 08:45:10.000000'),
-(5, 'cellphone', 'mobile', 'holy', '2020-05-16', '2020-05-25', 'on going', 4, '2020-05-05 08:58:24.000000'),
-(6, 'laptop', 'dell', 'dau', '2020-05-01', '2020-05-14', 'on going', 4, '2020-05-05 09:00:34.000000'),
-(7, 'pc', 'pc', 'dau', '2020-05-01', '2020-05-06', 'on going', 4, '2020-05-05 09:01:34.000000'),
-(8, 'smart phone', 'dd', 'asds', '2020-05-01', '2020-05-06', 'on going', 4, '2020-05-05 09:02:09.000000'),
-(9, 'lemon juice', 'lemon juice', 'slu', '2020-05-01', '2020-05-31', 'on going', 1, '2020-05-07 10:20:12.000000');
-
 -- --------------------------------------------------------
 
 --
@@ -151,35 +91,6 @@ CREATE TABLE `projectmembers` (
   `role` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `projectmembers`
---
-
-INSERT INTO `projectmembers` (`id`, `projectID`, `userID`, `role`) VALUES
-(1, 1, 1, 'Project Manager'),
-(2, 1, 2, NULL),
-(3, 1, 3, NULL),
-(4, 1, 4, NULL),
-(6, 2, 1, 'Project Manager'),
-(8, 3, 1, 'project manager'),
-(9, 3, 2, NULL),
-(10, 3, 3, NULL),
-(11, 3, 4, NULL),
-(13, 4, 1, 'developer'),
-(14, 4, 2, NULL),
-(15, 4, 3, NULL),
-(16, 4, 4, 'project manager'),
-(18, 7, 4, 'Project Manager'),
-(19, 8, 2, NULL),
-(20, 8, 3, NULL),
-(21, 8, 4, 'Project Manager'),
-(23, 2, 4, NULL),
-(27, 2, 2, NULL),
-(31, 2, 3, NULL),
-(34, 9, 1, 'project manager'),
-(35, 9, 3, NULL),
-(38, 9, 2, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -190,24 +101,6 @@ CREATE TABLE `projectteams` (
   `projectID` bigint(255) NOT NULL,
   `teamID` bigint(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `projectteams`
---
-
-INSERT INTO `projectteams` (`projectID`, `teamID`) VALUES
-(1, 1),
-(1, 2),
-(2, 2),
-(2, 3),
-(3, 1),
-(3, 2),
-(4, 1),
-(4, 2),
-(8, 1),
-(8, 3),
-(9, 6),
-(9, 7);
 
 -- --------------------------------------------------------
 
@@ -220,19 +113,6 @@ CREATE TABLE `team` (
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `team`
---
-
-INSERT INTO `team` (`id`, `name`) VALUES
-(1, 'alpha'),
-(2, 'beta'),
-(3, 'charlie'),
-(4, 'delta'),
-(5, 'foxtrot'),
-(6, 'geometry'),
-(7, 'howard');
-
 -- --------------------------------------------------------
 
 --
@@ -244,26 +124,6 @@ CREATE TABLE `teammembers` (
   `userID` bigint(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `teammembers`
---
-
-INSERT INTO `teammembers` (`teamID`, `userID`) VALUES
-(1, 2),
-(1, 3),
-(1, 4),
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4),
-(2, 5),
-(6, 1),
-(6, 2),
-(6, 3),
-(6, 5),
-(7, 1),
-(7, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -273,9 +133,10 @@ INSERT INTO `teammembers` (`teamID`, `userID`) VALUES
 CREATE TABLE `users` (
   `id` int(200) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `firstname` varchar(255) NOT NULL,
-  `lastname` varchar(255) NOT NULL,
+  `lastname` varchar(255) DEFAULT NULL,
+  `usedtologin` enum('1','2','3','4') NOT NULL,
   `lastlogin` timestamp(6) NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -283,12 +144,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `lastlogin`) VALUES
-(1, '12345@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'admin', 'admin', '2020-05-07 08:51:18.000000'),
-(2, 'adawd@gmail.com', '$2y$10$UwQe/JSTdhFaF6H2tCn2vOoHfmzXtHj9akuWPfC7DjT09bqv3OTUi', 'andrian yves', 'macalino', '2020-04-28 01:54:17.000000'),
-(3, 'john@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'john', 'john', '2020-05-05 07:09:21.000000'),
-(4, 'mark@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'mark', 'mark', '2020-05-06 23:49:34.000000'),
-(5, 'peter@gmail.com', '$2y$10$mWesohOrz0BdxCSMjUX8mO/AnEpcGl0Gi1zs2sm1EHk7rA.F1M2Qe', 'peter', 'peter', NULL);
+INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `usedtologin`, `lastlogin`) VALUES
+(1, 'admin@gmail.com', '$2y$10$dVjE.FdsjZ9JLZwxmErllOymoGNIxY3fwoxIwu7qXZ.o8Kt3SFZ5a', 'administrator', 'administrator', '1', '2020-05-16 00:25:59.000000');
 
 --
 -- Indexes for dumped tables
@@ -300,12 +157,6 @@ INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `lastlo
 ALTER TABLE `aboutme`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `userID` (`userID`);
-
---
--- Indexes for table `contacts`
---
-ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `messages`
@@ -349,7 +200,7 @@ ALTER TABLE `teammembers`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`,`usedtologin`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -362,40 +213,34 @@ ALTER TABLE `aboutme`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `contacts`
---
-ALTER TABLE `contacts`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `projectmembers`
 --
 ALTER TABLE `projectmembers`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

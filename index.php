@@ -3,9 +3,6 @@
   include 'includes/header.php'; 
   $current = "dashboard";
 
-  $sql = mysqli_query($conn, "SELECT * from aboutme where userID = '$id'");
-  $row1 = mysqli_fetch_assoc($sql);
-
 ?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -40,14 +37,17 @@
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="dist/img/user4-128x128.jpg"
-                       alt="User profile picture">
+                  <?php if(!empty($_SESSION['picture'])){?>
+                      <img src="<?php echo $_SESSION['picture']?>" class="profile-user-img img-fluid img-circle"alt="User profile picture" style="height: 100px; width: 100px;">
+                  <?php }else{?>
+                      <img <?php if($user['image'] == 'avatar.png'){ echo 'src="dist/img/avatar.png"';} else { echo 'src="dist/img/'.$id.'.'.pathinfo($user["image"], PATHINFO_EXTENSION).'"';} ?> class="profile-user-img img-fluid img-circle"alt="User profile picture" style="height: 100px; width: 100px;">
+                  <?php }?>
+
                 </div>
 
                 <h3 class="profile-username text-center"><?php echo ucwords($user['firstname']);?> <?php echo ucwords($user['lastname']);?></h3>
 
-                <p class="text-muted text-center"><?php echo ucwords($row1['title']);?></p>
+                <p class="text-muted text-center"><?php if(!empty($user['title'])){echo ucwords($user['title']);}?></p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
@@ -67,6 +67,7 @@
                   ?>
                   </li>
                 </ul>
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -82,30 +83,33 @@
                 <strong><i class="fas fa-book mr-1"></i> Education</strong>
 
                 <p class="text-muted">
-                  <?php echo ucfirst($row1['education']);?>
+                  <?php if(!empty($user['education'])){echo ucfirst($user['education']);}?>
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
-                <p class="text-muted"><?php echo ucfirst($row1['location']);?></p>
+                <p class="text-muted"><?php if(!empty($user['location'])){echo ucfirst($user['location']);}?></p>
 
                 <hr>
 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger"><?php echo ucfirst($row1['skills']);?></span>
+                  <span class="tag tag-danger"> <?php if(!empty($user['skills'])){echo ucfirst($user['skills']);}?></span>
                 </p>
 
                 <hr>
 
                 <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
 
-                <p class="text-muted"><?php echo ucfirst($row1['notes']);?>.</p>
+                <p class="text-muted"><?php if(!empty($user['notes'])){echo ucfirst($user['notes']);}?></p>
+
+                <a href="settings.php"><button type="button" class="btn btn-block btn-primary btn-xs">Edit</button></a>
               </div>
               <!-- /.card-body -->
+
             </div>
             <!-- /.card -->
           </div>
@@ -143,6 +147,7 @@
             </div>
           </div>
           <!-- ./col -->
+
         </div>
         <!-- /.row -->
           </div>

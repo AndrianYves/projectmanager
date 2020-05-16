@@ -44,9 +44,15 @@ if(isset($_SERVER['HTTP_REFERER'])) {
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="dist/img/user4-128x128.jpg"
-                       alt="User profile picture">
+
+                  <?php if(file_exists('dist/img/'.$usID.'.'.pathinfo($row['image'], PATHINFO_EXTENSION)) || $row['image'] == 'avatar.png'){?>
+                     <img <?php if($row['image'] == 'avatar.png'){ echo 'src="dist/img/avatar.png"';} else { echo 'src="dist/img/'.$usID.'.'.pathinfo($row["image"], PATHINFO_EXTENSION).'"';} ?> class="profile-user-img img-fluid img-circle"alt="User profile picture" style="height: 100px; width: 100px;">
+                  <?php }else{?>
+                     
+
+                      <img src="<?php echo $row['image']; ?>" class="profile-user-img img-fluid img-circle"alt="User profile picture" style="height: 100px; width: 100px;">
+                  <?php }?>
+
                 </div>
 
                 <h3 class="profile-username text-center"><?php echo ucwords($row['firstname']);?> <?php echo ucwords($row['lastname']);?></h3>

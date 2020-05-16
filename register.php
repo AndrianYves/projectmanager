@@ -1,9 +1,6 @@
 <?php 
-    session_start();
-      include 'includes/conn.php';
-    if(isset($_SESSION['users'])){
-      header('location: index.php');
-    }
+  include 'includes/conn.php';
+  include 'includes/session.php';
 
   include 'includes/header.php'; 
 
@@ -49,12 +46,24 @@ if(isset($_POST['register'])){
 
   $password = mysqli_real_escape_string($conn, $_POST["password"]);
   $cpassword = mysqli_real_escape_string($conn, $_POST["cpassword"]);
+  $usedtologin = '4';
 
   if ($password == $cpassword) {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $sql = $conn->prepare("INSERT INTO users(email, password, firstname, lastname) VALUES(?, ?, ?, ?)");
-    $sql->bind_param("ssss", $email, $hashedPassword, $firstname, $lastname);
+    $sql = $conn->prepare("INSERT INTO users(email, password, firstname, lastname, usedtologin) VALUES(?, ?, ?, ?, ?)");
+    $sql->bind_param("sssss", $email, $hashedPassword, $firstname, $lastname, $usedtologin);
     $sql->execute();
+    $sql->close();
+
+    $sql1 = mysqli_query($conn, "SELECT * from users where email = '$email'");
+    $row1 = mysqli_fetch_assoc($sql1);
+    $id = $row1['id'];
+    $image = 'avatar.png';
+
+    $sql = $conn->prepare("INSERT INTO aboutme(userID, image) VALUES(?, ?)");
+    $sql->bind_param("ss", $id, $image);
+    $sql->execute();
+    $sql->close();
 
   } else {
     $error = true;
@@ -70,6 +79,13 @@ if(isset($_POST['register'])){
   }
 
 }
+
+if($user['usedtologin'] != '1'){
+    
+     header('location: index.php');
+}
+
+
 ?>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -138,16 +154,6 @@ if(isset($_POST['register'])){
           <!-- /.col -->
         </div>
       </form>
-
-      <div class="social-auth-links text-center">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i>
-          Sign up using Facebook
-        </a>
-      </div>
-
-      <a href="login.php" class="text-center">I already have a membership</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

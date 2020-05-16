@@ -1,4 +1,7 @@
 <?php
+	require_once "g-config.php";
+	$gClient->revokeToken();
+
 	session_start();
 	session_destroy();
 

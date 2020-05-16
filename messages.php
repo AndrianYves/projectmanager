@@ -7,11 +7,11 @@
 <div class="wrapper">
 <?php 
 if(isset($_POST['sendmessage'])){ 
-  $sendto = $_POST['contactID'];
+  $receiver = $_POST['receiver'];
   $message = $_POST["send"];
   $timestamp = date("Y-m-d H:i:s");
 
-  $sql = "INSERT INTO messages(sendto, message, timestamp) VALUES('$sendto', '$message', '$timestamp')";   
+  $sql = "INSERT INTO messages(sendto, message, timestamp) VALUES('$receiver', '$message', '$timestamp')";   
   mysqli_query($conn, $sql);
 }
 
@@ -24,39 +24,19 @@ if(isset($_POST['createmessage'])){
   mysqli_query($conn, $sql);
 }
 
-if(isset($_POST['createcontact'])){ 
-  $name = $_POST['name'];
-  $address = $_POST["address"];
-  $number = $_POST["number"];
-  $image = $_FILES['image']['name'];
-  move_uploaded_file($_FILES["image"]["tmp_name"],"dist/img/".$_FILES["image"]["name"]);
-
-  $sql = "INSERT INTO contacts(name, number, address, image) VALUES('$name', '$number', '$address', '$image')";   
-    mysqli_query($conn, $sql);
-}
-
-if(isset($_POST['endcall'])){ 
-  $callid = $_POST['contactID'];
-  $minute = $_POST["minute"] - 3;
-  $timestamp = date("Y-m-d H:i:s");
-
-  $sql = "INSERT INTO logs(sendto, duration, timestamp) VALUES('$callid', '$minute', '$timestamp')";  
-      mysqli_query($conn, $sql); 
-
-}
 ?>
 <?php
 
 
- $id = $_GET['id'];
+ $contactID = $_GET['id'];
  if(empty($id)){
-  $id = $_POST['contactID'];
+  $contactID = $_POST['contactID'];
  }
 
-  $sql = mysqli_query($conn, "SELECT * FROM contacts where id = '$id'");
+  $getcontacts = mysqli_query($conn, "SELECT * FROM users where id = '$contactID'");
 
-    while($row = mysqli_fetch_array($sql)){
-    $name = $row['name'];
+    while($getcontactrow = mysqli_fetch_array($getcontacts)){
+    $name = $getcontactrow['firstname'];
     }
 
  ?>
@@ -104,7 +84,7 @@ if(isset($_POST['endcall'])){
                   </div> -->
                   <!-- /.direct-chat-msg -->
                   <?php
-  $query = mysqli_query($conn, "SELECT * FROM messages where sendto = '$id'");
+  $query = mysqli_query($conn, "SELECT * FROM messages where receiver = '$contactID'");
 
     while($row1 = mysqli_fetch_array($query)){?>
                   <!-- Message to the right -->
@@ -142,10 +122,11 @@ if(isset($_POST['endcall'])){
 
   <!-- Main Footer -->
 <footer class="main-footer">
-  <form action="index.php" method="post">
+  <form action="messages.php" method="post">
     <div class="input-group">
     <input type="text" name="send" placeholder="Type Message ..." class="form-control">
-    <input type="hidden" name="contactID" value="<?php echo $id;?>" class="form-control">
+    <input type="hidden" name="sender" value="<?php echo $id;?>" class="form-control">
+    <input type="hidden" name="receiver" value="<?php echo $contactID;?>" class="form-control">
     <span class="input-group-append">
     <button type="submit" class="btn btn-primary" name="sendmessage">Send</button>
     </form>

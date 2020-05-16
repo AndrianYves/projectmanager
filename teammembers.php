@@ -51,11 +51,11 @@ if(isset($_SERVER['HTTP_REFERER'])) {
                   </thead>
                   <tbody>
                     <?php 
-                    $sql = mysqli_query($conn, "SELECT * from teammembers join users on teammembers.userID = users.id where teamID = '$teamID'");
+                    $sql = mysqli_query($conn, "SELECT *, users.id as usID from teammembers join users on teammembers.userID = users.id where teamID = '$teamID'");
                     while($row = mysqli_fetch_assoc($sql)) { ?>
                     <tr>
                       <td><?php echo ucwords($row['firstname']); ?> <?php echo ucwords($row['lastname']); ?></td>
-                      <td><a href="profile.php"><span class="badge bg-info">View Profile</span></a></td>
+                      <td><a href="profile.php?id=<?php echo $row['usID']; ?>"><span class="badge bg-info">View Profile</span></a></td>
                     </tr>
                     <tr>
                     <?php }?>

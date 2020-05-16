@@ -1,6 +1,9 @@
 <?php
-    session_start();
+      require_once "config.php";
+      require_once "g-config.php";
+
       include 'includes/conn.php';
+      
     if(isset($_SESSION['users'])){
       header('location: index.php');
     }
@@ -50,12 +53,19 @@
         
       }
     }
+
+
+
+  $redirectURL = "http://localhost/projectmanager/fb-callback.php";
+  $permissions = ['email'];
+  $loginURL = $helper->getLoginUrl($redirectURL, $permissions);
+  $gloginURL = $gClient->createAuthUrl();
 ?>
 <?php include 'includes/header.php'; ?>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <b>Admin</b>
+    <b>Project Management</b>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -98,18 +108,21 @@
 
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+        <a href="<?php echo $loginURL; ?>" class="btn btn-block btn-primary">
+          <i class="fab fa-facebook mr-2"></i> Sign in with Facebook
+        </a>
+        <a href="<?php echo $gloginURL; ?>" class="btn btn-block btn-danger">
+          <i class="fab fa-google-plus mr-2"></i> Sign in with Google
         </a>
       </div>
       <!-- /.social-auth-links -->
-
+<!-- 
       <p class="mb-1">
         <a href="forgot-password.html">I forgot my password</a>
       </p>
       <p class="mb-0">
         <a href="register.php" class="text-center">Register a new membership</a>
-      </p>
+      </p> -->
     </div>
     <!-- /.login-card-body -->
   </div>

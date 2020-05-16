@@ -19,7 +19,7 @@
           <span class="badge badge-danger navbar-badge">3</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
+          <a href="messages.php" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
@@ -35,7 +35,7 @@
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="messages.php" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
@@ -51,7 +51,7 @@
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
+          <a href="messages.php" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
               <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
@@ -107,7 +107,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="index.php" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Project Manager</span>
@@ -117,26 +117,25 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+      <?php if(!empty($_SESSION['picture'])){?>
         <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['picture']?>" class="img-circle elevation-2" alt="User Image" style="height: 40px; width: 40px;">
         </div>
+      <?php }else{?>
+        <div class="image">
+          <img <?php if($user['image'] == 'avatar.png'){ echo 'src="dist/img/avatar.png"';} else { echo 'src="dist/img/'.$id.'.'.pathinfo($user["image"], PATHINFO_EXTENSION).'"';} ?> class="img-circle elevation-2" alt="User Image" style="height: 40px; width: 40px;">
+        </div>
+      <?php }?>
+
         <div class="info">
-          <a href="index.php" class="d-block"><?php echo $user['firstname']. ' '.$user['lastname']; ?></a>
+          <a href="index.php" class="d-block"><?php echo ucfirst($user['firstname']). ' '.ucfirst($user['lastname']); ?></a>
         </div>
       </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="#" class="nav-link" data-toggle="modal" data-target="#message">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Create Message
-              </p>
-            </a>
-          </li>
-          <?php if($current != 'messages') {?>
           <li class="nav-item">
             <a href="index.php" class="nav-link <?php if($current == 'dashboard') {echo 'active';} ?>">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -145,6 +144,15 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="messages.php" class="nav-link <?php if($current == 'messages') {echo 'active';} ?>">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Messages
+              </p>
+            </a>
+          </li>
+          <?php if($current != 'messages') {?>
           <li class="nav-item">
             <a href="projects.php" class="nav-link <?php if($current == 'projects') {echo 'active';} ?>">
               <i class="nav-icon fas fa-scroll"></i>
@@ -169,19 +177,38 @@
               </p>
             </a>
           </li>
+          <?php if($user['usedtologin'] == '1'):?>
+          <li class="nav-item">
+            <a href="register.php" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Register a User
+              </p>
+            </a>
+          </li>
+          <?php endif;?>
         <?php } else {?>
+          <li class="nav-header">Contacts</li>
            <?php
-            $sql = mysqli_query($conn, "SELECT * from contacts");
-            while ($row = mysqli_fetch_array($sql)) {
+            $contacts = mysqli_query($conn, "SELECT *, users.id as contactID from users join aboutme on users.id = aboutme.userID where users.id != '$id'");
+            while ($rowcontacts = mysqli_fetch_array($contacts)) {
           ?>
 
           <li class="nav-item">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-              <div class="image">
-                <img src="dist/img/<?php echo $row['image'];?>" class="img-circle">
-              </div>
+                <div class="image">
+               <?php if(file_exists('dist/img/'.$rowcontacts['contactID'].'.'.pathinfo($rowcontacts['image'], PATHINFO_EXTENSION)) || $rowcontacts['image'] == 'avatar.png'){?>
+                 <img <?php if($rowcontacts['image'] == 'avatar.png'){ echo 'src="dist/img/avatar.png"';} else { echo 'src="dist/img/'.$rowcontacts['contactID'].'.'.pathinfo($rowcontacts["image"], PATHINFO_EXTENSION).'"';} ?> class="img-circle elevation-2" alt="User Image" style="height: 40px; width: 40px;">
+              <?php }else{?>
+                
+                  <img src="<?php echo $rowcontacts['image']; ?>" class="img-circle elevation-2" alt="User Image" style="height: 40px; width: 40px;">
+              <?php }?>
+
+               </div>
+      
+
               <div class="info">
-                <a href='messages.php?id=<?php echo $row['id']; ?>' class="d-block"><?php echo ucwords($row['name']);?></i></a>
+                <a href='messages.php?id=<?php echo $rowcontacts['contactID']; ?>' class="d-block"><?php echo ucwords($rowcontacts['firstname']);?> <?php echo ucwords($rowcontacts['lastname']);?></i></a>
               </div>
             </div>
           </li>
